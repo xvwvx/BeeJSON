@@ -180,6 +180,7 @@ class BeeJSONTests: XCTestCase {
             "value1": "test",
             "value2": true,
             "value3": Model(),
+            "value4": [1, "test", true, [1, 2, 3, 4, Model()]],
         ]])
         let data = try? JSONEncoder().encode(origin)
         XCTAssert(data != nil)
