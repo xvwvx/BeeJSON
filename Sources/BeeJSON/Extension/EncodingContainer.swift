@@ -13,8 +13,8 @@ import Foundation
 public extension KeyedEncodingContainer {
     
     mutating func encode(_ dict: [String: Any]) throws {
-        for (key, value) in dict {
-            switch value {
+        for (key, any) in dict {
+            switch any {
             case let value as String:
                 try encode(value, forKey: .init(stringValue: key)!)
             case let value as Int:
@@ -32,6 +32,10 @@ public extension KeyedEncodingContainer {
             case let value as UInt64:
                 try encode(value, forKey: .init(stringValue: key)!)
             default:
+                if let encodable = any as? Encodable {
+                    let encoder = superEncoder(forKey: .init(stringValue: key)!)
+                    try encodable.encode(to: encoder)
+                }
                 break
             }
         }
@@ -61,7 +65,10 @@ public extension UnkeyedEncodingContainer {
             case let value as UInt64:
                 try encode(value)
             default:
-                break
+                if let encodable = any as? Encodable {
+                    let encoder = superEncoder()
+                    try encodable.encode(to: encoder)
+                }
             }
         }
     }

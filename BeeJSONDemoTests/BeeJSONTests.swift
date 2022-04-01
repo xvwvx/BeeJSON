@@ -153,8 +153,8 @@ class BeeJSONTests: XCTestCase {
     
     func testIgnore() {
         struct Model: Encodable {
-            @JSONIgnore<NSDecimalNumber>(NSDecimalNumber(string: "0.00001")) var value: NSDecimalNumber
-            @JSONIgnore<Int>(1234567890) var value1: Int
+            @JSONIgnore<NSDecimalNumber>(NSDecimalNumber(string: "0.00001")) var value
+            @JSONIgnore<Int>(1234567890) var value1
         }
         var origin = Model()
         origin.value = NSDecimalNumber(string: "0.00001")
@@ -170,8 +170,32 @@ class BeeJSONTests: XCTestCase {
     
     func testAny() {
         struct Model: Codable {
-            @JSONAny<[Any]>([]) var array: [Any]
-            @JSONAny<[String: Any]>([:]) var dict: [String: Any]
+            var value0 = 0
+            var value1 = true
+            var value2 = "test"
+        }
+        
+        let origin = JSONAny<Any>([1, "test", true, Model(), [
+            "value0": 0,
+            "value1": "test",
+            "value2": true,
+            "value3": Model(),
+        ]])
+        let data = try? JSONEncoder().encode(origin)
+        XCTAssert(data != nil)
+        
+        let array = (try? JSONDecoder().decode(JSONAny<[Any]>.self, from: data!))?.wrappedValue
+        XCTAssert(array != nil)
+        
+        XCTAssert(isEqual(any: array?[0], value: 1))
+        XCTAssert(isEqual(any: array?[1], value: "test"))
+        XCTAssert(isEqual(any: array?[2], value: true))
+    }
+    
+    func testAnyStruct() {
+        struct Model: Codable {
+            @JSONAny<[Any]>([]) var array
+            @JSONAny<[String: Any]>([:]) var dict
         }
         
         var origin = Model()
@@ -213,7 +237,7 @@ class BeeJSONTests: XCTestCase {
     
     func testNSDecimalNumberWrapper() {
         struct Model: Codable {
-            @JSONDecimalNumber var value: NSDecimalNumber
+            @JSONDecimalNumber var value
         }
         
         var origin = Model()
@@ -234,7 +258,7 @@ class BeeJSONTests: XCTestCase {
             var value0 = 0
             var value1 = true
             var value2 = "test"
-            @JSONDecimalNumber var value3: NSDecimalNumber
+            @JSONDecimalNumber var value3
         }
         
         struct Model: Codable {
