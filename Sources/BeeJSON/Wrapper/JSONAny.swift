@@ -25,7 +25,9 @@ public struct JSONAny<T>: Codable {
             }
             return encoder
         }()
-        if let value = wrappedValue as? [String: Any] {
+        if let encodable = wrappedValue as? Encodable {
+            try encodable.encode(to: encoder)
+        } else if let value = wrappedValue as? [String: Any] {
             var container = encoder.container(keyedBy: AnyCodingKey.self)
             try container.encode(value)
         } else if let value = wrappedValue as? [Any] {

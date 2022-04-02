@@ -9,15 +9,15 @@
 
 import Foundation
 
-struct AnyCodingKey: CodingKey {
-    var stringValue: String
-    var intValue: Int?
+public struct AnyCodingKey: CodingKey {
+    public var stringValue: String
+    public var intValue: Int?
 
-    init?(stringValue: String) {
+    public init?(stringValue: String) {
         self.stringValue = stringValue
     }
 
-    init?(intValue: Int) {
+    public init?(intValue: Int) {
         self.stringValue = "\(intValue)"
         self.intValue = intValue
     }
