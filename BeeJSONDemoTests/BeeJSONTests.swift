@@ -193,6 +193,25 @@ class BeeJSONTests: XCTestCase {
         XCTAssert(isEqual(any: array?[2], value: true))
     }
     
+    func testAnyContainsCodable() {
+        struct Model: Codable {
+            var value0 = 0
+            var value1 = true
+            var value2 = "test"
+        }
+        
+        let origin = Model()
+        let data = try? JSONEncoder().encode(JSONAny(origin))
+        XCTAssert(data != nil)
+        
+        let model = (try? JSONDecoder().decode(JSONAny<Model>.self, from: data!))?.wrappedValue
+        XCTAssert(model != nil)
+        
+        XCTAssertEqual(origin.value0, model?.value0)
+        XCTAssertEqual(origin.value1, model?.value1)
+        XCTAssertEqual(origin.value2, model?.value2)
+    }
+    
     func testAnyStruct() {
         struct Model: Codable {
             @JSONAny<[Any]>([]) var array

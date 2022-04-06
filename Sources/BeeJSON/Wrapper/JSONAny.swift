@@ -46,7 +46,12 @@ public struct JSONAny<T>: Codable {
             }
             return decoder
         }()
-        if let container = try? decoder.container(keyedBy: AnyCodingKey.self) {
+        if let decodable = T.self as? Decodable.Type {
+            if let value = try decodable.init(from: decoder) as? T {
+                wrappedValue = value
+                return
+            }
+        } else if let container = try? decoder.container(keyedBy: AnyCodingKey.self) {
             if let value = try container.decode([String : Any].self) as? T {
                 wrappedValue = value
                 return
