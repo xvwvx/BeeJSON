@@ -19,9 +19,21 @@ public struct JSONDecimalNumber: Codable {
     }
     
     public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
+        let decoder: Decoder = {
+            if let decoder = decoder as? DecoderImpl {
+                return decoder.decoder
+            }
+            return decoder
+        }()
+        guard let container = try? decoder.singleValueContainer() else {
+            wrappedValue = .zero
+            return
+        }
+        
         if let value = try? container.decode(String.self) {
             wrappedValue = NSDecimalNumber(string: value)
+        } else if let value = try? container.decode(Int64.self) {
+            wrappedValue = NSDecimalNumber(value: value)
         } else if let value = try? container.decode(Double.self) {
             wrappedValue = NSDecimalNumber(value: value)
         } else {
