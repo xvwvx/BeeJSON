@@ -30,7 +30,6 @@
 		8048DDA027E99F2B00C22E1B /* EncodingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DD9F27E99F2B00C22E1B /* EncodingContainer.swift */; };
 		8048DDA227E99F8700C22E1B /* AnyCodingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DDA127E99F8700C22E1B /* AnyCodingKey.swift */; };
 		8048DDA427E9A29600C22E1B /* DecodingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DDA327E9A29600C22E1B /* DecodingContainer.swift */; };
-		80833F8F2806B441006F97E1 /* NSDecimalNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80833F8E2806B441006F97E1 /* NSDecimalNumber.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,7 +69,6 @@
 		8048DD9F27E99F2B00C22E1B /* EncodingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodingContainer.swift; sourceTree = "<group>"; };
 		8048DDA127E99F8700C22E1B /* AnyCodingKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodingKey.swift; sourceTree = "<group>"; };
 		8048DDA327E9A29600C22E1B /* DecodingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodingContainer.swift; sourceTree = "<group>"; };
-		80833F8E2806B441006F97E1 /* NSDecimalNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSDecimalNumber.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,7 +189,6 @@
 				8048DD9F27E99F2B00C22E1B /* EncodingContainer.swift */,
 				8048DDA327E9A29600C22E1B /* DecodingContainer.swift */,
 				8048DDA127E99F8700C22E1B /* AnyCodingKey.swift */,
-				80833F8E2806B441006F97E1 /* NSDecimalNumber.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -344,7 +341,6 @@
 				8048DD9127E975EC00C22E1B /* EncoderImpl.UnkeyedContainer.swift in Sources */,
 				8048DD9027E975EC00C22E1B /* EncoderImpl.KeyedContainer.swift in Sources */,
 				8048DD9627E975EC00C22E1B /* JSONDecimalNumber.swift in Sources */,
-				80833F8F2806B441006F97E1 /* NSDecimalNumber.swift in Sources */,
 				8048DD9927E975EC00C22E1B /* EncoderImpl.SingleValueContainer.swift in Sources */,
 				8048DD9A27E975EC00C22E1B /* DecoderImpl.UnkeyedContainer.swift in Sources */,
 				8048DD9227E975EC00C22E1B /* EncoderImpl.swift in Sources */,
