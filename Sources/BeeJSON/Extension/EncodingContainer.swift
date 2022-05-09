@@ -24,6 +24,16 @@ public extension KeyedEncodingContainer {
             case let value as [Any]:
                 var container = nestedUnkeyedContainer(forKey: .init(stringValue: key)!)
                 try container.encode(value)
+            case let value as String:
+                try encode(value, forKey: .init(stringValue: key)!)
+            case let value as Int:
+                try encode(value, forKey: .init(stringValue: key)!)
+            case let value as UInt64:
+                try encode(value, forKey: .init(stringValue: key)!)
+            case let value as Double:
+                try encode(value, forKey: .init(stringValue: key)!)
+            case let value as Bool:
+                try encode(value, forKey: .init(stringValue: key)!)
             default:
                 break
             }
@@ -46,6 +56,16 @@ public extension UnkeyedEncodingContainer {
             case let value as [Any]:
                 var container = nestedUnkeyedContainer()
                 try container.encode(value)
+            case let value as String:
+                try encode(value)
+            case let value as Int:
+                try encode(value)
+            case let value as UInt64:
+                try encode(value)
+            case let value as Double:
+                try encode(value)
+            case let value as Bool:
+                try encode(value)
             default:
                 break
             }
@@ -62,11 +82,11 @@ public extension SingleValueEncodingContainer {
             try encode(value)
         case let value as Int:
             try encode(value)
+        case let value as UInt64:
+            try encode(value)
         case let value as Double:
             try encode(value)
         case let value as Bool:
-            try encode(value)
-        case let value as UInt64:
             try encode(value)
         default:
             break
