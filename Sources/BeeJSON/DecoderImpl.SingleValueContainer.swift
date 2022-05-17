@@ -86,7 +86,12 @@ extension DecoderImpl {
         }
         
         func decode<T>(_ type: T.Type) throws -> T where T : Decodable {
-            try container.decode(type)
+            do {
+                return try container.decode(type)
+            } catch {
+                // 有些情况下，解析 dict -> Model 会进入这个解析，兼容这种情况
+                return try DecoderImpl.decode(type, decoder: impl, jsonDecoder: impl.jsonDecoder)
+            }
         }
         
     }
