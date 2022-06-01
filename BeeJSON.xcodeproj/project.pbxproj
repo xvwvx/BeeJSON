@@ -11,7 +11,6 @@
 		8048DD2927E866E600C22E1B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DD2827E866E600C22E1B /* ViewController.swift */; };
 		8048DD2E27E866E900C22E1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8048DD2D27E866E900C22E1B /* Assets.xcassets */; };
 		8048DD3127E866E900C22E1B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8048DD2F27E866E900C22E1B /* LaunchScreen.storyboard */; };
-		8048DD5627E8698C00C22E1B /* BeeJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8048DCE927E865A300C22E1B /* BeeJSON.framework */; };
 		8048DD5827E86A6900C22E1B /* BeeJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DD5727E86A6900C22E1B /* BeeJSONTests.swift */; };
 		8048DD8E27E975EB00C22E1B /* DecoderImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DD7F27E975EB00C22E1B /* DecoderImpl.swift */; };
 		8048DD8F27E975EB00C22E1B /* DecoderImpl.SingleValueContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DD8027E975EB00C22E1B /* DecoderImpl.SingleValueContainer.swift */; };
@@ -30,6 +29,9 @@
 		8048DDA027E99F2B00C22E1B /* EncodingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DD9F27E99F2B00C22E1B /* EncodingContainer.swift */; };
 		8048DDA227E99F8700C22E1B /* AnyCodingKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DDA127E99F8700C22E1B /* AnyCodingKey.swift */; };
 		8048DDA427E9A29600C22E1B /* DecodingContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DDA327E9A29600C22E1B /* DecodingContainer.swift */; };
+		80DE3C5128473C5400230A1A /* BeeJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8048DCE927E865A300C22E1B /* BeeJSON.framework */; };
+		80DE3C5228473C5400230A1A /* BeeJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8048DCE927E865A300C22E1B /* BeeJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		80DE3C5528473C7200230A1A /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DE3C5428473C7200230A1A /* Cache.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +43,20 @@
 			remoteInfo = BeeJSONDemo;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		80DE3C5328473C5400230A1A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				80DE3C5228473C5400230A1A /* BeeJSON.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		8048DCE927E865A300C22E1B /* BeeJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BeeJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +85,7 @@
 		8048DD9F27E99F2B00C22E1B /* EncodingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodingContainer.swift; sourceTree = "<group>"; };
 		8048DDA127E99F8700C22E1B /* AnyCodingKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyCodingKey.swift; sourceTree = "<group>"; };
 		8048DDA327E9A29600C22E1B /* DecodingContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecodingContainer.swift; sourceTree = "<group>"; };
+		80DE3C5428473C7200230A1A /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8048DD5627E8698C00C22E1B /* BeeJSON.framework in Frameworks */,
+				80DE3C5128473C5400230A1A /* BeeJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +183,7 @@
 				8048DD8127E975EB00C22E1B /* EncoderImpl.KeyedContainer.swift */,
 				8048DD8227E975EB00C22E1B /* EncoderImpl.UnkeyedContainer.swift */,
 				8048DD8927E975EB00C22E1B /* UnwrapProtocol.swift */,
+				80DE3C5428473C7200230A1A /* Cache.swift */,
 				8048DD9E27E99F1A00C22E1B /* Extension */,
 				8048DD8427E975EB00C22E1B /* Wrapper */,
 			);
@@ -231,6 +249,7 @@
 				8048DD1E27E866E600C22E1B /* Sources */,
 				8048DD1F27E866E600C22E1B /* Frameworks */,
 				8048DD2027E866E600C22E1B /* Resources */,
+				80DE3C5328473C5400230A1A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -342,6 +361,7 @@
 				8048DD9027E975EC00C22E1B /* EncoderImpl.KeyedContainer.swift in Sources */,
 				8048DD9627E975EC00C22E1B /* JSONDecimalNumber.swift in Sources */,
 				8048DD9927E975EC00C22E1B /* EncoderImpl.SingleValueContainer.swift in Sources */,
+				80DE3C5528473C7200230A1A /* Cache.swift in Sources */,
 				8048DD9A27E975EC00C22E1B /* DecoderImpl.UnkeyedContainer.swift in Sources */,
 				8048DD9227E975EC00C22E1B /* EncoderImpl.swift in Sources */,
 				8048DD9827E975EC00C22E1B /* DecoderImpl.KeyedContainer.swift in Sources */,

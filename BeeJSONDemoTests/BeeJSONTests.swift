@@ -21,20 +21,18 @@ class BeeJSONTests: XCTestCase {
     }
     
     func testDefaultValues() {
-        
-        struct Model: Codable, BeeJSON {
+        struct Model: Decodable, BeeJSON {
+            struct Model: Decodable, BeeJSON {
+                var value0 = 0
+                var value1 = true
+                var value2 = "test"
+            }
             
             var value0 = 0
             var value1 = true
             var value2 = "test"
-            
-            static func defaultValues() -> [String : Any] {
-                return [
-                    "value0": 123456789,
-                    "value1": false,
-                    "value2": "defaultValue2",
-                ]
-            }
+            var value3: [Int] = [1, 2, 3, 4, 5]
+            var value4 = Model()
         }
         
         let data = """
@@ -43,11 +41,24 @@ class BeeJSONTests: XCTestCase {
         let model = try? BeeJSONDecoder().decode(Model.self, from: data)
         XCTAssert(model != nil)
         
-        let values = Model.defaultValues()
-        XCTAssert(isEqual(any: values["value0"], value: model?.value0))
-        XCTAssert(isEqual(any: values["value1"], value: model?.value1))
-        XCTAssert(isEqual(any: values["value2"], value: model?.value2))
+        let value = Model()
+        XCTAssert(isEqual(any: value.value0, value: model?.value0))
+        XCTAssert(isEqual(any: value.value1, value: model?.value1))
+        XCTAssert(isEqual(any: value.value2, value: model?.value2))
+        XCTAssert(isEqual(any: value.value3, value: model?.value3))
         
+        XCTAssert(isEqual(any: value.value4.value2, value: model?.value4.value2))
+        XCTAssert(isEqual(any: value.value4.value2, value: model?.value4.value2))
+        XCTAssert(isEqual(any: value.value4.value2, value: model?.value4.value2))
+        
+        do {
+            let value = Model.Model()
+            let model = try? BeeJSONDecoder().decode(Model.Model.self, from: data)
+            XCTAssert(model != nil)
+            XCTAssert(isEqual(any: value.value0, value: model?.value0))
+            XCTAssert(isEqual(any: value.value1, value: model?.value1))
+            XCTAssert(isEqual(any: value.value2, value: model?.value2))
+        }
     }
     
     func testNested() {
