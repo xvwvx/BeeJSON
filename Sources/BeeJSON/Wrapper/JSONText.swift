@@ -32,8 +32,14 @@ public struct JSONText<T>: Codable where T: Codable {
     }
     
     public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let str = try container.decode(String.self)
+        let str: String = {
+            if let container = try? decoder.singleValueContainer(),
+               let str = try? container.decode(String.self),
+               str != "" {
+                return str
+            }
+            return "{}"
+        }()
         let data = str.data(using: .utf8)!
         
         let jsonDecoder: JSONDecoder = {

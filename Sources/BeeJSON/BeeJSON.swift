@@ -12,9 +12,10 @@ import Foundation
 
 public protocol BeeJSON {
     init()
+    static func defaultValues() -> [String: Any]
 }
 
-extension BeeJSON {
+public extension BeeJSON {
     
     static func defaultValues() -> [String: Any] {
         if let dict = Cache.shared.get(type: self) {

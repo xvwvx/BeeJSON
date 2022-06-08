@@ -316,4 +316,64 @@ class BeeJSONTests: XCTestCase {
         XCTAssertEqual(model?.value.value3, origin.value.value3)
     }
     
+    func testOptionalTextWrapper() {
+        struct Value: Codable, BeeJSON {
+            var value0 = 0
+            var value1 = true
+            var value2 = "test"
+        }
+        
+        struct Model: Codable {
+            @JSONText<Value?>(nil)
+            var value
+        }
+        
+        do {
+            let str = """
+            {
+            }
+            """
+            let data = str.data(using: .utf8)!
+            let model = try? BeeJSONDecoder().decode(Model.self, from: data)
+            XCTAssertNotNil(model)
+        }
+        
+        do {
+            let str = """
+            {
+                "value": null
+            }
+            """
+            let data = str.data(using: .utf8)!
+            let model = try? BeeJSONDecoder().decode(Model.self, from: data)
+            XCTAssertNotNil(model)
+        }
+        
+        do {
+            let str = """
+            {
+                "value": ""
+            }
+            """
+            let data = str.data(using: .utf8)!
+            let model = try? BeeJSONDecoder().decode(Model.self, from: data)
+            XCTAssertNotNil(model)
+        }
+        
+        do {
+            let value = "测试"
+            let valueDict: [String: Any] = [
+                "value2": value
+            ]
+            let dict: [String: Any?] = [
+                "value": try? JSONSerialization.string(withJSONObject: valueDict, options: .fragmentsAllowed)
+            ]
+            let str = try! JSONSerialization.string(withJSONObject: dict, options: .fragmentsAllowed)
+            let data = str.data(using: .utf8)!
+            let model = try? BeeJSONDecoder().decode(Model.self, from: data)
+            XCTAssertNotNil(model)
+            XCTAssertEqual(model?.value?.value2, value)
+        }
+    }
+    
 }
