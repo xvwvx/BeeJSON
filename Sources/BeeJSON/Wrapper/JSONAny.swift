@@ -47,26 +47,36 @@ public struct JSONAny<T>: Codable {
             return decoder
         }()
         if let decodable = T.self as? Decodable.Type {
-            if let value = try decodable.init(from: decoder) as? T {
+            if let value = try? decodable.init(from: decoder) as? T {
                 wrappedValue = value
                 return
             }
         } else if let container = try? decoder.container(keyedBy: AnyCodingKey.self) {
-            if let value = try container.decode([String : Any].self) as? T {
+            if let value = try? container.decode([String : Any].self) as? T {
                 wrappedValue = value
                 return
             }
         } else if var container = try? decoder.unkeyedContainer() {
-            if let value = try container.decode([Any].self) as? T {
+            if let value = try? container.decode([Any].self) as? T {
                 wrappedValue = value
                 return
             }
         } else if let container = try? decoder.singleValueContainer() {
-            if let value = try container.decodeAny() as? T {
+            if let value = try? container.decodeAny() as? T {
                 wrappedValue = value
                 return
             }
         }
+        
+        if let value = [] as? T ?? [:] as? T {
+            wrappedValue = value
+            return
+        }
+        if let beeType = T.self as? BeeJSON.Type {
+            wrappedValue = beeType.init() as! T
+            return
+        }
+
         throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: ""))
     }
     
