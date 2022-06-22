@@ -47,3 +47,7 @@ extension NSObject {
     }
 }
 
+public protocol BeeJSONUnwrap: UnwrapProtocol {
+    
+}
+

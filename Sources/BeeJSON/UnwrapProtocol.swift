@@ -9,8 +9,21 @@
 
 import Foundation
 
-protocol UnwrapProtocol {
+public protocol UnwrapProtocol {
     static func unwrap(_ any: Any?) -> Self?
+}
+
+extension RawRepresentable where Self: UnwrapProtocol {
+    
+    public static func unwrap(_ any: Any?) -> Self? {
+        if let unwrapType = RawValue.self as? UnwrapProtocol.Type {
+            if let value = unwrapType.unwrap(any) as? RawValue {
+                return Self(rawValue: value)
+            }
+        }
+        return nil
+    }
+    
 }
 
 fileprivate let formatter: NumberFormatter = {
@@ -23,7 +36,7 @@ fileprivate let formatter: NumberFormatter = {
 
 extension String: UnwrapProtocol {
     
-    static func unwrap(_ any: Any?) -> String? {
+    public static func unwrap(_ any: Any?) -> String? {
         switch any {
         case let value as UInt64:
             return value.description
@@ -42,7 +55,7 @@ extension String: UnwrapProtocol {
 
 extension Bool: UnwrapProtocol {
     
-    static func unwrap(_ any: Any?) -> Bool? {
+    public static func unwrap(_ any: Any?) -> Bool? {
         switch any {
         case let value as String:
             return value == "true"
@@ -63,7 +76,7 @@ protocol IntegerUnwrap: FixedWidthInteger, UnwrapProtocol {
 
 extension IntegerUnwrap {
     
-    static func unwrap(_ any: Any?) -> Self? {
+    public static func unwrap(_ any: Any?) -> Self? {
         switch any {
         case let value as String:
             return Self.init(value, radix: 10)
@@ -95,7 +108,7 @@ protocol FloatUnwrap: LosslessStringConvertible, UnwrapProtocol {
 
 extension FloatUnwrap {
     
-    static func unwrap(_ any: Any?) -> Self? {
+    public static func unwrap(_ any: Any?) -> Self? {
         switch any {
         case let value as String:
             return Self.init(value)
