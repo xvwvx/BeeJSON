@@ -111,6 +111,44 @@ class BeeJSONTests: XCTestCase {
         }
     }
     
+    func testNested1() {
+        
+        let str = """
+        {
+            "value0": "1645701161948000",
+            "value1": {
+                "content": "",
+                "contentType": "VIDEO",
+                "sequenceId": "1645701161948123",
+            },
+            "value3": null,
+            "value4": "1645701161948111",
+        }
+        """
+        
+        struct Model: Codable, BeeJSON {
+            struct Model1: Codable, BeeJSON {
+                var sequenceId: Int64 = 0
+                var content = ""
+                var contentType = ""
+            }
+            
+            var value0: Int64 = 0
+            var value1 = Model1()
+            var value2: Int64 = 0
+            var value3: Int64 = 0
+            var value4: Int64 = 0
+        }
+        
+        let data = str.data(using: .utf8)!
+        let model = try? BeeJSONDecoder().decode(Model.self, from: data)
+        XCTAssertNotNil(model)
+        XCTAssertEqual(model?.value0, 1645701161948000)
+        XCTAssertEqual(model?.value1.contentType, "VIDEO")
+        XCTAssertEqual(model?.value1.sequenceId, 1645701161948123)
+        XCTAssertEqual(model?.value4, 1645701161948111)
+    }
+    
     func testWrongType() {
         struct Model: Codable {
             struct Value<T>: Codable where T: Codable {
