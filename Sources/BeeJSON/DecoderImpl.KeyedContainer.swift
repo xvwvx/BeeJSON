@@ -96,10 +96,10 @@ extension DecoderImpl {
         
         public func decode<T>(_ type: T.Type, forKey key: Key) throws -> T where T : Decodable {
             do {
-                return try decodeAsType(type, forKey: key)
-            } catch {
                 let decoder = try container.superDecoder(forKey: key)
                 return try DecoderImpl.decode(type, decoder: decoder, jsonDecoder: impl.jsonDecoder)
+            } catch {
+                return try decodeAsType(type, forKey: key)
             }
         }
         

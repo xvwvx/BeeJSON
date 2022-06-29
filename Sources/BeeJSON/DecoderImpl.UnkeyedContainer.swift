@@ -99,10 +99,10 @@ extension DecoderImpl {
         
         mutating func decode<T>(_ type: T.Type) throws -> T where T : Decodable {
             do {
-                return try container.decode(type)
-            } catch {
                 let decoder = try container.superDecoder()
                 return try DecoderImpl.decode(type, decoder: decoder, jsonDecoder: impl.jsonDecoder)
+            } catch {
+                return try container.decode(type)
             }
         }
         
