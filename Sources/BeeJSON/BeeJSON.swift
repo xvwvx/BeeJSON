@@ -29,17 +29,17 @@ public extension BeeJSON {
             value = Self.init()
         }
         
-        func allValues(mirror: Mirror?, all: [String: Any] = [:]) -> [String: Any] {
-            guard let mirror = mirror else {
-                return all
-            }
+        func allValues(mirror: Mirror, all: [String: Any] = [:]) -> [String: Any] {
             var all = all
             mirror.children.forEach { child in
                 if let label = child.label {
                     all[label] = child.value
                 }
             }
-            return allValues(mirror: mirror.superclassMirror, all: all)
+            guard let mirror = mirror.superclassMirror else {
+                return all
+            }
+            return allValues(mirror: mirror, all: all)
         }
         let mirror = Mirror(reflecting: value)
         let dict = allValues(mirror: mirror)
