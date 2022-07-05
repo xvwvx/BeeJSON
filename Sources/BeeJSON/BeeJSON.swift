@@ -28,12 +28,21 @@ public extension BeeJSON {
         } else {
             value = Self.init()
         }
-        let mirror = Mirror(reflecting: value)
-        let dict = mirror.children.reduce(into: [String: Any]()) { result, child in
-            if let label = child.label {
-                result[label] = child.value
+        
+        func allValues(mirror: Mirror?, all: [String: Any] = [:]) -> [String: Any] {
+            guard let mirror = mirror else {
+                return all
             }
+            var all = all
+            mirror.children.forEach { child in
+                if let label = child.label {
+                    all[label] = child.value
+                }
+            }
+            return allValues(mirror: mirror.superclassMirror, all: all)
         }
+        let mirror = Mirror(reflecting: value)
+        let dict = allValues(mirror: mirror)
         Cache.shared.set(type: self, value: dict)
         return dict
     }

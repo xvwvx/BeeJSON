@@ -414,4 +414,29 @@ class BeeJSONTests: XCTestCase {
         }
     }
     
+    func testInheritance() {
+        class Base: Codable, BeeJSON {
+            var value0 = 0x1234567
+            var value1 = ""
+            var value2 = false
+            required init() {}
+        }
+        
+        class Model: Base {
+            var value3 = 0x12345678
+            var value4 = ""
+            var value5 = false
+        }
+        
+        let text = """
+        {
+        }
+        """
+        let data = text.data(using: .utf8)!
+        let model = try? BeeJSONDecoder().decode(Model.self, from: data)
+        XCTAssertNotNil(model)
+        XCTAssertEqual(model?.value0, 0x1234567)
+        XCTAssertEqual(model?.value3, 0x12345678)
+    }
+    
 }
