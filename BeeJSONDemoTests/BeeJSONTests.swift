@@ -439,4 +439,22 @@ class BeeJSONTests: XCTestCase {
         XCTAssertEqual(model?.value3, 0x12345678)
     }
     
+    func testContainerNil() {
+        let text = """
+        {
+            "array": null,
+            "dict": null
+        }
+        """
+        struct Model: Codable {
+            var array: [Int]
+            var dict: [String: String]
+        }
+        let data = text.data(using: .utf8)!
+        let model = try? BeeJSONDecoder().decode(Model.self, from: data)
+        XCTAssertNotNil(model)
+        XCTAssertEqual(model?.array, [])
+        XCTAssertEqual(model?.dict, [:])
+    }
+    
 }

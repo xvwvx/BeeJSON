@@ -70,6 +70,11 @@ extension DecoderImpl {
             return value
         }
         
+        // 针对数组，字典，特殊处理
+        if let value = [] as? T ?? [:] as? T {
+            return value
+        }
+        
         return nil
     }
   
