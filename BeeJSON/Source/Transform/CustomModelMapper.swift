@@ -7,8 +7,8 @@
 
 struct MappingPropertyHandler {
     let name: String?
-    let assignmentClosure: ((Any?) -> (Any?))?
-    let takeValueClosure: ((Any?) -> (Any?))?
+    let transformFrom: ((Any?) -> (Any?))?
+    let transformTo: ((Any?) -> (Any?))?
 }
 
 public struct CustomModelMapper {
@@ -27,7 +27,7 @@ public struct CustomModelMapper {
     public mutating func specify<T>(property: inout T, name: String) {
         let pointer = withUnsafePointer(to: &property, { $0 })
         let key = Int(bitPattern: pointer)
-        mappingHandlers[key] = MappingPropertyHandler(name: name, assignmentClosure: nil, takeValueClosure: nil)
+        mappingHandlers[key] = MappingPropertyHandler(name: name, transformFrom: nil, transformTo: nil)
     }
     
     public mutating func specify<Transform: TransformType>(property: inout Transform.Object, name: String? = nil, transformer: Transform? = nil) {
@@ -47,7 +47,7 @@ public struct CustomModelMapper {
         
         let pointer = withUnsafePointer(to: &property, { $0 })
         let key = Int(bitPattern: pointer)
-        mappingHandlers[key] = MappingPropertyHandler(name: name, assignmentClosure: assignmentClosure, takeValueClosure: takeValueClosure)
+        mappingHandlers[key] = MappingPropertyHandler(name: name, transformFrom: assignmentClosure, transformTo: takeValueClosure)
     }
     
     public mutating func exclude<T>(property: inout T) {

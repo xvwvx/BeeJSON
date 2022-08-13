@@ -46,12 +46,12 @@ extension _CustomModelType {
                 let pointer = base.advanced(by: item.offset)
                 let any = withAnyExtension(item.type)
                 let value: Any? = {
-                    if let transformer = item.assignmentClosure {
+                    if let transformer = item.transformFrom {
                         return transformer(rawValue)
                     }
                     if let transformableType = item.type as? _CustomModelType.Type {
                         if let dict = rawValue as? [String: Any], !dict.isEmpty {
-                            var value = (any.value(from: pointer) as? _CustomModelType) ?? transformableType.init()
+                            var value = (any.read(pointer: pointer) as? _CustomModelType) ?? transformableType.init()
                             value._transform(dict: dict)
                             return value
                         }
@@ -63,7 +63,7 @@ extension _CustomModelType {
                     return nil
                 }()
                 if let value = value {
-                    any.write(value, to: pointer)
+                    any.write(pointer: pointer, value: value)
                 }
             }
         }
@@ -82,7 +82,7 @@ extension _CustomModelType {
             let items = CustomModelTypeCache.shared.getOrCreate(type: Self.self)
             return items.reduce(into: [String: Any]()) { result, item in
                 let pointer = base.advanced(by: item.offset)
-                let rawValue = withAnyExtension(item.type).value(from: pointer)
+                let rawValue = withAnyExtension(item.type).read(pointer: pointer)
                 if let value = rawValue as? _Transformable {
                     result[item.name] = value.plainValue()
                 }

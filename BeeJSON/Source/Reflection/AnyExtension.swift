@@ -11,26 +11,33 @@ public protocol AnyExtension {}
 
 extension AnyExtension {
 
-    public static func isSelf(_ value: Any) -> Bool {
+    @inlinable public static func isSelf(_ value: Any) -> Bool {
         return value is Self
     }
-
-    public static func value(from pointer: UnsafeRawPointer) -> Any {
+    
+    @inlinable public static func asSelf(_ value: Any) -> Self? {
+        return value as? Self
+    }
+    
+    @inlinable public static func read(pointer: UnsafeRawPointer) -> Self {
         return pointer.assumingMemoryBound(to: self).pointee
     }
-
-    public static func write(_ value: Any, to pointer: UnsafeMutableRawPointer) {
+    
+    @inlinable public static func write(pointer: UnsafeMutableRawPointer, value: Any) {
         if let value = value as? Self {
             pointer.assumingMemoryBound(to: self).pointee = value
         }
     }
-
-    public static func takeValue(from any: Any) -> Self? {
-        return any as? Self
+    
+    @inlinable public static func write(pointer: UnsafeMutableRawPointer, value: Any?) {
+        if let value = value as? Self {
+            pointer.assumingMemoryBound(to: self).pointee = value
+        }
     }
     
 }
 
-public func withAnyExtension(_ type: Any.Type) -> AnyExtension.Type {
-    ProtocolTypeContainer(type: type).anyExtension
+@inlinable public func withAnyExtension(_ type: Any.Type) -> AnyExtension.Type {
+    let container = ProtocolTypeContainer(type: type)
+    return unsafeBitCast(container, to: AnyExtension.Type.self)
 }

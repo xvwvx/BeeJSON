@@ -13,8 +13,8 @@ class CustomModelTypeCache {
         let name: String
         let type: Any.Type
         let offset: Int
-        let assignmentClosure: ((Any?) -> (Any?))?
-        let takeValueClosure: ((Any?) -> (Any?))?
+        let transformFrom: ((Any?) -> (Any?))?
+        let transformTo: ((Any?) -> (Any?))?
     }
 
     static let shared = CustomModelTypeCache()
@@ -66,7 +66,9 @@ class CustomModelTypeCache {
                 return nil
             }
             let handler = mapper.mappingHandler(key: key)
-            guard property.type is _Transformable.Type || handler?.assignmentClosure != nil else {
+            guard property.type is _Transformable.Type
+                || handler?.transformFrom != nil
+                || handler?.transformTo != nil else {
                 return nil
             }
             
@@ -74,8 +76,8 @@ class CustomModelTypeCache {
             return Item(name: name,
                         type: property.type,
                         offset: property.offset,
-                        assignmentClosure: handler?.assignmentClosure,
-                        takeValueClosure: handler?.takeValueClosure)
+                        transformFrom: handler?.transformFrom,
+                        transformTo: handler?.transformTo)
         }
         
         pthread_rwlock_wrlock(&rwlock)

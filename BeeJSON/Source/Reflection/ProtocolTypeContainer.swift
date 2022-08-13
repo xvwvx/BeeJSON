@@ -7,11 +7,11 @@
 
 import Swift
 
-internal struct ProtocolTypeContainer {
+@usableFromInline internal struct ProtocolTypeContainer {
     let type: Any.Type
     let witnessTable = 0
     
-    var anyExtension: AnyExtension.Type {
-        unsafeBitCast(self, to: AnyExtension.Type.self)
+    @usableFromInline internal init(type: Any.Type) {
+        self.type = type
     }
 }
