@@ -29,23 +29,33 @@ extension _CustomModelType {
 
     static func _transform(dict: [String: Any]) -> _CustomModelType? {
         var value = Self.init()
-        _transform(dict: dict, to: &value)
+        value._transform(dict: dict)
         return value
     }
     
-    static func _transform(dict: [String: Any], to value: inout Self) {
-        let base = try! withPointer(&value) { $0 }
+    mutating func _transform(dict: [String: Any]) {
+        let base = try! withPointer(&self) { $0 }
         defer {
-            value.didFinishMapping()
+            self.didFinishMapping()
         }
         
         let items = CustomModelTypeCache.shared.getOrCreate(type: Self.self)
         
         items.forEach { item in
             if let rawValue = dict[item.name] {
+                let pointer = base.advanced(by: item.offset)
+                let any = withAnyExtension(item.type)
                 let value: Any? = {
                     if let transformer = item.assignmentClosure {
                         return transformer(rawValue)
+                    }
+                    if let transformableType = item.type as? _CustomModelType.Type {
+                        if let dict = rawValue as? [String: Any], !dict.isEmpty {
+                            var value = (any.value(from: pointer) as? _CustomModelType) ?? transformableType.init()
+                            value._transform(dict: dict)
+                            return value
+                        }
+                        return nil 
                     }
                     if let transformableType = item.type as? _Transformable.Type {
                         return transformableType.transform(from: rawValue)
@@ -53,12 +63,10 @@ extension _CustomModelType {
                     return nil
                 }()
                 if let value = value {
-                    let pointer = base.advanced(by: item.offset)
-                    withAnyExtension(item.type).write(value, to: pointer)
+                    any.write(value, to: pointer)
                 }
             }
         }
-    
     }
 }
 
