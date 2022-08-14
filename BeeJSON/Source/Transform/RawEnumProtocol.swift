@@ -15,9 +15,9 @@ public protocol _RawEnumProtocol: _Transformable {
 
 extension RawRepresentable where Self: _RawEnumProtocol {
 
-    public static func _transform(from object: Any) -> Self? {
+    public static func _transform(from object: Any) throws -> Self? {
         if let transformableType = RawValue.self as? _Transformable.Type {
-            if let typedValue = transformableType.transform(from: object) as? RawValue {
+            if let typedValue = try transformableType.transform(from: object) as? RawValue {
                 return Self(rawValue: typedValue)
             }
         }

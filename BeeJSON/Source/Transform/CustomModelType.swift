@@ -20,45 +20,45 @@ extension _CustomModelType {
 
 extension _CustomModelType {
     
-    static func _transform(from object: Any) -> Self? {
+    static func _transform(from object: Any) throws -> Self? {
         if let dict = object as? [String: Any] {
-            return self._transform(dict: dict) as? Self
+            return try self._transform(dict: dict) as? Self
         }
         return nil
     }
 
-    static func _transform(dict: [String: Any]) -> _CustomModelType? {
+    static func _transform(dict: [String: Any]) throws -> _CustomModelType? {
         var value = Self.init()
-        value._transform(dict: dict)
+        try value._transform(dict: dict)
         return value
     }
     
-    mutating func _transform(dict: [String: Any]) {
+    mutating func _transform(dict: [String: Any]) throws {
         let base = try! withPointer(&self) { $0 }
         defer {
             self.didFinishMapping()
         }
         
-        let items = CustomModelTypeCache.shared.getOrCreate(type: Self.self)
+        let items = try CustomModelTypeCache.shared.getOrCreate(type: Self.self)
         
-        items.forEach { item in
+        for item in items {
             if let rawValue = dict[item.name] {
                 let pointer = base.advanced(by: item.offset)
                 let any = withAnyExtension(item.type)
-                let value: Any? = {
+                let value: Any? = try {
                     if let transformer = item.transformFrom {
                         return transformer(rawValue)
                     }
                     if let transformableType = item.type as? _CustomModelType.Type {
                         if let dict = rawValue as? [String: Any], !dict.isEmpty {
                             var value = (any.read(pointer: pointer) as? _CustomModelType) ?? transformableType.init()
-                            value._transform(dict: dict)
+                            try value._transform(dict: dict)
                             return value
                         }
                         return nil 
                     }
                     if let transformableType = item.type as? _Transformable.Type {
-                        return transformableType.transform(from: rawValue)
+                        return try transformableType.transform(from: rawValue)
                     }
                     return nil
                 }()
@@ -72,19 +72,19 @@ extension _CustomModelType {
 
 extension _CustomModelType {
 
-    func _plainValue() -> Any? {
-        return Self._serialize(self)
+    func _plainValue() throws -> Any? {
+        return try Self._serialize(self)
     }
     
-    static func _serialize(_ object: Self) -> Any? {
+    static func _serialize(_ object: Self) throws -> Any? {
         var object = object
-        return try! withPointer(&object) { base -> [String: Any] in
-            let items = CustomModelTypeCache.shared.getOrCreate(type: Self.self)
-            return items.reduce(into: [String: Any]()) { result, item in
+        return try withPointer(&object) { base -> [String: Any] in
+            let items = try CustomModelTypeCache.shared.getOrCreate(type: Self.self)
+            return try items.reduce(into: [String: Any]()) { result, item in
                 let pointer = base.advanced(by: item.offset)
                 let rawValue = withAnyExtension(item.type).read(pointer: pointer)
                 if let value = rawValue as? _Transformable {
-                    result[item.name] = value.plainValue()
+                    result[item.name] = try value.plainValue()
                 }
             }
         }

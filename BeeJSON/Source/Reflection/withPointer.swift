@@ -24,7 +24,7 @@ func withPointer<Value, Result>(_ value: inout Value, _ body: (UnsafeMutableRawP
             return try body(pointer)
         }
     default:
-        fatalError()
+        throw ReflectionError.couldNotGetTypeInfo(type: Value.self)
     }
 }
 

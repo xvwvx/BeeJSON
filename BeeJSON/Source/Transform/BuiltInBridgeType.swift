@@ -9,27 +9,27 @@ import Foundation
 
 protocol _BuiltInBridgeType: _Transformable {
 
-    static func _transform(from object: Any) -> _BuiltInBridgeType?
-    func _plainValue() -> Any?
+    static func _transform(from object: Any) throws -> _BuiltInBridgeType?
+    func _plainValue() throws -> Any?
 }
 
 extension NSString: _BuiltInBridgeType {
 
-    static func _transform(from object: Any) -> _BuiltInBridgeType? {
-        if let str = String.transform(from: object) {
+    static func _transform(from object: Any) throws -> _BuiltInBridgeType? {
+        if let str = try String.transform(from: object) {
             return NSString(string: str)
         }
         return nil
     }
 
-    func _plainValue() -> Any? {
+    func _plainValue() throws -> Any? {
         return self
     }
 }
 
 extension NSNumber: _BuiltInBridgeType {
 
-    static func _transform(from object: Any) -> _BuiltInBridgeType? {
+    static func _transform(from object: Any) throws -> _BuiltInBridgeType? {
         switch object {
         case let num as NSNumber:
             return num
@@ -50,29 +50,29 @@ extension NSNumber: _BuiltInBridgeType {
         }
     }
 
-    func _plainValue() -> Any? {
+    func _plainValue() throws -> Any? {
         return self
     }
 }
 
 extension NSArray: _BuiltInBridgeType {
     
-    static func _transform(from object: Any) -> _BuiltInBridgeType? {
+    static func _transform(from object: Any) throws -> _BuiltInBridgeType? {
         return object as? NSArray
     }
 
-    func _plainValue() -> Any? {
-        return (self as? Array<Any>)?.plainValue()
+    func _plainValue() throws -> Any? {
+        return try (self as? Array<Any>)?.plainValue()
     }
 }
 
 extension NSDictionary: _BuiltInBridgeType {
     
-    static func _transform(from object: Any) -> _BuiltInBridgeType? {
+    static func _transform(from object: Any) throws -> _BuiltInBridgeType? {
         return object as? NSDictionary
     }
 
-    func _plainValue() -> Any? {
-        return (self as? Dictionary<String, Any>)?.plainValue()
+    func _plainValue() throws -> Any? {
+        return try (self as? Dictionary<String, Any>)?.plainValue()
     }
 }

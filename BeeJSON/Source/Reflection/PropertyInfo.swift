@@ -14,3 +14,17 @@ public struct PropertyInfo {
     public let offset: Int
 }
 
+public extension PropertyInfo {
+    
+    func getName() -> String {
+        var name = name
+        let key = "$__lazy_storage_$_"
+        if name.starts(with: key) {
+            name.removeFirst(key.count)
+        } else if name.starts(with: "_") {
+            name.removeFirst()
+        }
+        return name
+    }
+    
+}

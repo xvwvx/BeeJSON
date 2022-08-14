@@ -41,7 +41,7 @@ class CustomModelTypeCache {
         dict = [:]
     }
     
-    func getOrCreate<T: _CustomModelType>(type: T.Type) -> [Item] {
+    func getOrCreate<T: _CustomModelType>(type: T.Type) throws -> [Item] {
         let key = String(reflecting: type)
         do {
             pthread_rwlock_rdlock(&rwlock)
@@ -54,7 +54,7 @@ class CustomModelTypeCache {
         }
         
         var value = T.init()
-        let base = try! withPointer(&value) { $0 }
+        let base = try withPointer(&value) { $0 }
         var mapper = CustomModelMapper()
         value.mapping(mapper: &mapper)
         
@@ -72,7 +72,12 @@ class CustomModelTypeCache {
                 return nil
             }
             
-            let name = handler?.name ?? property.name
+            let name: String = {
+                if let name = handler?.name {
+                    return name
+                }
+                return property.getName()
+            }()
             return Item(name: name,
                         type: property.type,
                         offset: property.offset,
