@@ -21,7 +21,7 @@ extension _Transformable {
         case let type as _BuiltInBasicType.Type:
             return try type._transform(from: object) as? Self
         case let type as _RawEnumProtocol.Type:
-            return type._transform(from: object) as? Self
+            return try type._transform(from: object) as? Self
         case let type as _CustomModelType.Type:
             return try type._transform(from: object) as? Self
         default:
@@ -38,7 +38,7 @@ extension _Transformable {
         case let rawValue as _BuiltInBasicType:
             return try rawValue._plainValue()
         case let rawValue as _RawEnumProtocol:
-            return rawValue._plainValue()
+            return try rawValue._plainValue()
         case let rawValue as _CustomModelType:
             return try rawValue._plainValue()
         default:

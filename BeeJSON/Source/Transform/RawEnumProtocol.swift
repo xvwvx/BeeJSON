@@ -9,8 +9,8 @@ import Foundation
 
 public protocol _RawEnumProtocol: _Transformable {
 
-    static func _transform(from object: Any) -> Self?
-    func _plainValue() -> Any?
+    static func _transform(from object: Any) throws -> Self?
+    func _plainValue() throws -> Any?
 }
 
 extension RawRepresentable where Self: _RawEnumProtocol {
@@ -24,7 +24,7 @@ extension RawRepresentable where Self: _RawEnumProtocol {
         return nil
     }
 
-    public func _plainValue() -> Any? {
+    public func _plainValue() throws -> Any? {
         return self.rawValue
     }
 }
