@@ -33,6 +33,11 @@
 		8046624D28A2C1340030CEE3 /* DataTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8046624C28A2C1340030CEE3 /* DataTransform.swift */; };
 		8046624F28A2C14D0030CEE3 /* HexColorTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8046624E28A2C14D0030CEE3 /* HexColorTransform.swift */; };
 		8046625128A3F9720030CEE3 /* CustomModelTypeCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8046625028A3F9720030CEE3 /* CustomModelTypeCache.swift */; };
+		806B008B28AA605B000E45F1 /* ReflectionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806B008A28AA605B000E45F1 /* ReflectionError.swift */; };
+		806B009128AA60E3000E45F1 /* CustomDateFormatTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806B008D28AA60E3000E45F1 /* CustomDateFormatTransform.swift */; };
+		806B009228AA60E3000E45F1 /* ISO8601DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806B008E28AA60E3000E45F1 /* ISO8601DateTransform.swift */; };
+		806B009328AA60E3000E45F1 /* DateTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806B008F28AA60E3000E45F1 /* DateTransform.swift */; };
+		806B009428AA60E3000E45F1 /* DateFormatterTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 806B009028AA60E3000E45F1 /* DateFormatterTransform.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +69,11 @@
 		8046624C28A2C1340030CEE3 /* DataTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataTransform.swift; sourceTree = "<group>"; };
 		8046624E28A2C14D0030CEE3 /* HexColorTransform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexColorTransform.swift; sourceTree = "<group>"; };
 		8046625028A3F9720030CEE3 /* CustomModelTypeCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomModelTypeCache.swift; sourceTree = "<group>"; };
+		806B008A28AA605B000E45F1 /* ReflectionError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReflectionError.swift; sourceTree = "<group>"; };
+		806B008D28AA60E3000E45F1 /* CustomDateFormatTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDateFormatTransform.swift; sourceTree = "<group>"; };
+		806B008E28AA60E3000E45F1 /* ISO8601DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ISO8601DateTransform.swift; sourceTree = "<group>"; };
+		806B008F28AA60E3000E45F1 /* DateTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateTransform.swift; sourceTree = "<group>"; };
+		806B009028AA60E3000E45F1 /* DateFormatterTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateFormatterTransform.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +134,7 @@
 				8046622328A2913C0030CEE3 /* ProtocolTypeContainer.swift */,
 				8046622728A2913C0030CEE3 /* AnyExtension.swift */,
 				8046622528A2913C0030CEE3 /* withPointer.swift */,
+				806B008A28AA605B000E45F1 /* ReflectionError.swift */,
 			);
 			path = Reflection;
 			sourceTree = "<group>";
@@ -148,6 +159,7 @@
 		8046623F28A2AF1A0030CEE3 /* Transforms */ = {
 			isa = PBXGroup;
 			children = (
+				806B008C28AA60E3000E45F1 /* Date */,
 				8046624028A2AF250030CEE3 /* TransformType.swift */,
 				8046624228A2AF510030CEE3 /* TransformOf.swift */,
 				8046624628A2BF5F0030CEE3 /* URLTransform.swift */,
@@ -157,6 +169,17 @@
 				8046624E28A2C14D0030CEE3 /* HexColorTransform.swift */,
 			);
 			path = Transforms;
+			sourceTree = "<group>";
+		};
+		806B008C28AA60E3000E45F1 /* Date */ = {
+			isa = PBXGroup;
+			children = (
+				806B008D28AA60E3000E45F1 /* CustomDateFormatTransform.swift */,
+				806B008E28AA60E3000E45F1 /* ISO8601DateTransform.swift */,
+				806B008F28AA60E3000E45F1 /* DateTransform.swift */,
+				806B009028AA60E3000E45F1 /* DateFormatterTransform.swift */,
+			);
+			path = Date;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,14 +252,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				806B009328AA60E3000E45F1 /* DateTransform.swift in Sources */,
 				8046624728A2BF5F0030CEE3 /* URLTransform.swift in Sources */,
 				8046622C28A2913C0030CEE3 /* PropertyInfo.swift in Sources */,
 				8046625128A3F9720030CEE3 /* CustomModelTypeCache.swift in Sources */,
 				8046624B28A2BF970030CEE3 /* NSDecimalNumberTransform.swift in Sources */,
 				8046621128A2908F0030CEE3 /* ViewController.swift in Sources */,
 				8046623A28A2A0EA0030CEE3 /* CustomModelMapper.swift in Sources */,
+				806B009228AA60E3000E45F1 /* ISO8601DateTransform.swift in Sources */,
 				8046624328A2AF510030CEE3 /* TransformOf.swift in Sources */,
 				8046623428A29F5A0030CEE3 /* BuiltInBridgeType.swift in Sources */,
+				806B008B28AA605B000E45F1 /* ReflectionError.swift in Sources */,
 				8046622D28A2913C0030CEE3 /* AnyExtension.swift in Sources */,
 				8046622B28A2913C0030CEE3 /* withPointer.swift in Sources */,
 				8046623228A29E310030CEE3 /* BuiltInBasicType.swift in Sources */,
@@ -244,6 +270,7 @@
 				8046622828A2913C0030CEE3 /* TypeInfo.swift in Sources */,
 				8046623628A29FA30030CEE3 /* RawEnumProtocol.swift in Sources */,
 				8046624928A2BF820030CEE3 /* EnumTransform.swift in Sources */,
+				806B009128AA60E3000E45F1 /* CustomDateFormatTransform.swift in Sources */,
 				8046622A28A2913C0030CEE3 /* CBridge.swift in Sources */,
 				8046623028A29D130030CEE3 /* Transformable.swift in Sources */,
 				8046623C28A2A2B40030CEE3 /* CustomBasicType.swift in Sources */,
@@ -252,6 +279,7 @@
 				8046620D28A2908F0030CEE3 /* AppDelegate.swift in Sources */,
 				8046623828A2A0B80030CEE3 /* CustomModelType.swift in Sources */,
 				8046624528A2BA400030CEE3 /* BeeJSON.swift in Sources */,
+				806B009428AA60E3000E45F1 /* DateFormatterTransform.swift in Sources */,
 				8046624D28A2C1340030CEE3 /* DataTransform.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
