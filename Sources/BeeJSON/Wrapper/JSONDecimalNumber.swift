@@ -30,6 +30,12 @@ public struct JSONDecimalNumber: Codable {
             return
         }
         
+        defer {
+            if wrappedValue == NSDecimalNumber.notANumber {
+                wrappedValue = .zero
+            }
+        }
+        
         if let value = try? container.decode(String.self) {
             wrappedValue = NSDecimalNumber(string: value)
         } else if let value = try? container.decode(Int64.self) {
