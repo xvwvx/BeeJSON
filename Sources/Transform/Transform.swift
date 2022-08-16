@@ -19,17 +19,17 @@ public struct Transformer {
 
 public extension Transformer {
     
-    func decode<T>(_ type: T.Type, from string: String) throws -> T?  {
-        if let data = string.data(using: .utf8) {
-            return try decode(type, from: data)
-        }
-        return nil
-    }
-    
-    func decode<T>(_ type: T.Type, from data: Data) throws -> T?  {
+    func decode<T>(_ type: T.Type, from data: Data) throws -> T? {
         if let transformableType = type as? _Transformable.Type {
             let object = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
             return try transformableType.transform(from: object) as? T
+        }
+        throw TransformError.validDecodeType(type)
+    }
+    
+    func decode<T>(_ type: T.Type, from string: String) throws -> T? {
+        if let data = string.data(using: .utf8) {
+            return try decode(type, from: data)
         }
         return nil
     }
@@ -42,20 +42,22 @@ public extension Transformer {
         if let transformable = value as? _Transformable {
             return try transformable.plainValue()
         }
-        return nil
+        throw TransformError.validEncodeType(type(of: self))
     }
     
-    func encodeToData<T>(_ value: T, options opt: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> Data? {
+    func encodeToData<T>(_ value: T, options: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> Data? {
         if let value = try encode(value) {
-            if JSONSerialization.isValidJSONObject(value) {
-                return try JSONSerialization.data(withJSONObject: value, options: opt)
+            do {
+                return try JSONSerialization.data(withJSONObject: value, options: options)
+            } catch {
+                throw TransformError.validJSONObject(error)
             }
         }
         return nil
     }
     
-    func encodeToString<T>(_ value: T, options opt: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> String? {
-        if let data = try encodeToData(value, options: opt) {
+    func encodeToString<T>(_ value: T, options: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> String? {
+        if let data = try encodeToData(value, options: options) {
             return String(data: data, encoding: .utf8)
         }
         return nil
