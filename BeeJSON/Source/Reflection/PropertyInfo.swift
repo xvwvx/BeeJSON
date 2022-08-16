@@ -21,8 +21,6 @@ public extension PropertyInfo {
         let key = "$__lazy_storage_$_"
         if name.starts(with: key) {
             name.removeFirst(key.count)
-        } else if name.starts(with: "_") {
-            name.removeFirst()
         }
         return name
     }

@@ -25,6 +25,9 @@ extension RawRepresentable where Self: _RawEnumProtocol {
     }
 
     public func _plainValue() throws -> Any? {
-        return self.rawValue
+        if let transformable = self.rawValue as? _Transformable {
+            return try transformable.plainValue()
+        }
+        return nil
     }
 }

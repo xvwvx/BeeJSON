@@ -1,5 +1,5 @@
 //
-//  Mapper.swift
+//  CustomModelMapper.swift
 //  BeeJSON
 //
 //  Created by snow on 2022/8/9.
