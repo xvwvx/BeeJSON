@@ -5,7 +5,9 @@
 //  Created by snow on 2022/8/10.
 //
 
+#if canImport(UIKit)
 import UIKit
+#endif
 
 class CustomModelTypeCache {
     
@@ -27,10 +29,12 @@ class CustomModelTypeCache {
         let status = pthread_rwlock_init(&rwlock, nil)
         assert(status == 0)
         
+        #if canImport(UIKit)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didReceiveMemoryWarning),
                                                name: UIApplication.didReceiveMemoryWarningNotification,
                                                object: nil)
+        #endif
     }
     
     @objc func didReceiveMemoryWarning() {
@@ -60,6 +64,7 @@ class CustomModelTypeCache {
         
         let info = typeInfo(of: T.self)
         let baseKey = Int(bitPattern: base)
+        let names = info.properties.map({ $0.name })
         let items: [Item] = info.properties.compactMap { property in
             let key = baseKey + property.offset
             if mapper.propertyExcluded(key: key) {
@@ -72,7 +77,24 @@ class CustomModelTypeCache {
                 return nil
             }
             
-            let name = handler?.name ?? property.getName()
+            let name: String? = {
+                if let name = handler?.name {
+                    return name
+                }
+                var name = property.getName()
+                if name.starts(with: "_") {
+                    // 处理 @propertyWrapper
+                    name.removeFirst()
+                    if names.contains(name) {
+                        return nil
+                    }
+                }
+                return name
+            }()
+            guard let name = name else {
+                return nil
+            }
+            
             return Item(name: name,
                         type: property.type,
                         offset: property.offset,

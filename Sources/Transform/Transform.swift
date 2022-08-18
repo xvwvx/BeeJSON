@@ -19,7 +19,7 @@ public struct Transformer {
 
 public extension Transformer {
     
-    func decode<T>(_ type: T.Type, from data: Data) throws -> T? {
+    static func decode<T>(_ type: T.Type, from data: Data) throws -> T? {
         if let transformableType = type as? _Transformable.Type {
             let object = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
             return try transformableType.transform(from: object) as? T
@@ -27,7 +27,7 @@ public extension Transformer {
         throw TransformError.validDecodeType(type)
     }
     
-    func decode<T>(_ type: T.Type, from string: String) throws -> T? {
+    static func decode<T>(_ type: T.Type, from string: String) throws -> T? {
         if let data = string.data(using: .utf8) {
             return try decode(type, from: data)
         }
@@ -38,14 +38,14 @@ public extension Transformer {
 
 public extension Transformer {
     
-    func encode<T>(_ value: T) throws -> Any? {
+    static func encode<T>(_ value: T) throws -> Any? {
         if let transformable = value as? _Transformable {
             return try transformable.plainValue()
         }
         throw TransformError.validEncodeType(type(of: self))
     }
     
-    func encodeToData<T>(_ value: T, options: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> Data? {
+    static func encodeToData<T>(_ value: T, options: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> Data? {
         if let value = try encode(value) {
             do {
                 return try JSONSerialization.data(withJSONObject: value, options: options)
@@ -56,7 +56,7 @@ public extension Transformer {
         return nil
     }
     
-    func encodeToString<T>(_ value: T, options: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> String? {
+    static func encodeToString<T>(_ value: T, options: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> String? {
         if let data = try encodeToData(value, options: options) {
             return String(data: data, encoding: .utf8)
         }
