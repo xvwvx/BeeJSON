@@ -7,11 +7,20 @@
 
 import Swift
 
-@usableFromInline internal struct ProtocolTypeContainer {
+public struct ProtocolTypeContainer {
     let type: Any.Type
     let witnessTable = 0
     
-    @usableFromInline internal init(type: Any.Type) {
+    public init(type: Any.Type) {
         self.type = type
+    }
+    
+    @inlinable public func asExtension<T>(to type: T.Type) -> T {
+        return unsafeBitCast(self, to: type)
+    }
+    
+    @inlinable public static func asExtension<T>(from: Any.Type, to: T.Type) -> T {
+        let container = ProtocolTypeContainer(type: from)
+        return unsafeBitCast(container, to: to)
     }
 }
