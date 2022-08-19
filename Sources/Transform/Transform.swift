@@ -19,7 +19,14 @@ public struct Transformer {
 
 public extension Transformer {
     
-    static func decode<T>(_ type: T.Type, from data: Data) throws -> T? {
+    static func decode<T>(_ type: T.Type, any: Any) throws -> T? {
+        if let transformableType = type as? _Transformable.Type {
+            return try transformableType.transform(from: any) as? T
+        }
+        throw TransformError.validDecodeType(type)
+    }
+    
+    static func decode<T>(_ type: T.Type, data: Data) throws -> T? {
         if let transformableType = type as? _Transformable.Type {
             let object = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
             return try transformableType.transform(from: object) as? T
@@ -27,9 +34,9 @@ public extension Transformer {
         throw TransformError.validDecodeType(type)
     }
     
-    static func decode<T>(_ type: T.Type, from string: String) throws -> T? {
+    static func decode<T>(_ type: T.Type, string: String) throws -> T? {
         if let data = string.data(using: .utf8) {
-            return try decode(type, from: data)
+            return try decode(type, data: data)
         }
         return nil
     }
