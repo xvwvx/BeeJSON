@@ -13,16 +13,3 @@ public struct PropertyInfo {
     public let isVar: Bool
     public let offset: Int
 }
-
-public extension PropertyInfo {
-    
-    func getName() -> String {
-        var name = name
-        let key = "$__lazy_storage_$_"
-        if name.starts(with: key) {
-            name.removeFirst(key.count)
-        }
-        return name
-    }
-    
-}

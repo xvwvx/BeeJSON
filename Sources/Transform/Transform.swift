@@ -14,27 +14,23 @@ public protocol BeeJSON: _CustomModelType {}
 public protocol BeeJSONEnum: _RawEnumProtocol {}
 
 public struct Transformer {
-    public init() {}
+    
+    public static var ignoreLazy = true
+    
 }
 
 public extension Transformer {
     
-    static func decode<T>(_ type: T.Type, from any: Any) throws -> T? {
-        if let transformableType = type as? _Transformable.Type {
-            return try transformableType.transform(from: any) as? T
-        }
-        throw TransformError.validDecodeType(type)
+    static func decode<T>(_ type: T.Type, from any: Any) throws -> T? where T: _Transformable {
+        return try type.transform(from: any)
     }
     
-    static func decode<T>(_ type: T.Type, from data: Data) throws -> T? {
-        if let transformableType = type as? _Transformable.Type {
-            let object = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
-            return try transformableType.transform(from: object) as? T
-        }
-        throw TransformError.validDecodeType(type)
+    static func decode<T>(_ type: T.Type, from data: Data) throws -> T? where T: _Transformable {
+        let any = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+        return try type.transform(from: any)
     }
     
-    static func decode<T>(_ type: T.Type, from string: String) throws -> T? {
+    static func decode<T>(_ type: T.Type, from string: String) throws -> T? where T: _Transformable {
         if let data = string.data(using: .utf8) {
             return try decode(type, from: data)
         }
@@ -45,25 +41,18 @@ public extension Transformer {
 
 public extension Transformer {
     
-    static func encode<T>(_ value: T) throws -> Any? {
-        if let transformable = value as? _Transformable {
-            return try transformable.plainValue()
-        }
-        throw TransformError.validEncodeType(type(of: self))
+    static func encode<T>(_ value: T) throws -> Any? where T: _Transformable {
+        return try value.plainValue()
     }
     
-    static func encodeToData<T>(_ value: T, options: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> Data? {
+    static func encodeToData<T>(_ value: T, options: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> Data? where T: _Transformable {
         if let value = try encode(value) {
-            do {
-                return try JSONSerialization.data(withJSONObject: value, options: options)
-            } catch {
-                throw TransformError.validJSONObject(error)
-            }
+            return try JSONSerialization.data(withJSONObject: value, options: options)
         }
         return nil
     }
     
-    static func encodeToString<T>(_ value: T, options: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> String? {
+    static func encodeToString<T>(_ value: T, options: JSONSerialization.WritingOptions = [.fragmentsAllowed]) throws -> String? where T: _Transformable {
         if let data = try encodeToData(value, options: options) {
             return String(data: data, encoding: .utf8)
         }

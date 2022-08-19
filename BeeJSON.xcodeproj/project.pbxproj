@@ -34,7 +34,6 @@
 		8024990C28ABD95F0085B719 /* withPointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802498F028ABD95F0085B719 /* withPointer.swift */; };
 		8024990D28ABD95F0085B719 /* PropertyInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802498F128ABD95F0085B719 /* PropertyInfo.swift */; };
 		8024990E28ABD95F0085B719 /* AnyExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802498F228ABD95F0085B719 /* AnyExtension.swift */; };
-		8024991028ABE0AF0085B719 /* TransformError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8024990F28ABE0AF0085B719 /* TransformError.swift */; };
 		80301F402850430300EE2700 /* JSONSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80301F3F2850430300EE2700 /* JSONSerialization.swift */; };
 		8048DD2527E866E600C22E1B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DD2427E866E600C22E1B /* AppDelegate.swift */; };
 		8048DD2927E866E600C22E1B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8048DD2827E866E600C22E1B /* ViewController.swift */; };
@@ -114,7 +113,6 @@
 		802498F028ABD95F0085B719 /* withPointer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = withPointer.swift; sourceTree = "<group>"; };
 		802498F128ABD95F0085B719 /* PropertyInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyInfo.swift; sourceTree = "<group>"; };
 		802498F228ABD95F0085B719 /* AnyExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnyExtension.swift; sourceTree = "<group>"; };
-		8024990F28ABE0AF0085B719 /* TransformError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformError.swift; sourceTree = "<group>"; };
 		80301F3F2850430300EE2700 /* JSONSerialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONSerialization.swift; sourceTree = "<group>"; };
 		8048DCE927E865A300C22E1B /* BeeJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BeeJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8048DD2227E866E600C22E1B /* BeeJSONDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeeJSONDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,7 +180,6 @@
 				802498EA28ABD95F0085B719 /* CustomModelMapper.swift */,
 				802498D428ABD95F0085B719 /* CustomModelTypeCache.swift */,
 				802498D828ABD95F0085B719 /* Transform.swift */,
-				8024990F28ABE0AF0085B719 /* TransformError.swift */,
 				802498DA28ABD95F0085B719 /* Transforms */,
 			);
 			path = Transform;
@@ -502,7 +499,6 @@
 				802498F928ABD95F0085B719 /* HexColorTransform.swift in Sources */,
 				802498F728ABD95F0085B719 /* Transform.swift in Sources */,
 				802498F628ABD95F0085B719 /* RawEnumProtocol.swift in Sources */,
-				8024991028ABE0AF0085B719 /* TransformError.swift in Sources */,
 				8024990528ABD95F0085B719 /* CustomModelType.swift in Sources */,
 				8048DDA427E9A29600C22E1B /* DecodingContainer.swift in Sources */,
 				8048DD8F27E975EB00C22E1B /* DecoderImpl.SingleValueContainer.swift in Sources */,

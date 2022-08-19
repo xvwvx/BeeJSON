@@ -7,7 +7,7 @@
 
 import Swift
 
-func withPointer<Value, Result>(_ value: inout Value, _ body: (UnsafeMutableRawPointer) throws -> Result) throws -> Result {
+public func withPointer<Value, Result>(_ value: inout Value, _ body: (UnsafeMutableRawPointer) throws -> Result) throws -> Result {
     let kind = _metadataKind(Value.self)
     switch kind {
     case 0:

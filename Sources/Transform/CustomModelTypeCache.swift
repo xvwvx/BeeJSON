@@ -81,8 +81,15 @@ class CustomModelTypeCache {
                 if let name = handler?.name {
                     return name
                 }
-                var name = property.getName()
-                if name.starts(with: "_") {
+                var name = property.name
+                let lazyKey = "$__lazy_storage_$_"
+                if name.starts(with: lazyKey) {
+                    // 处理 lazy
+                    if Transformer.ignoreLazy {
+                        return nil
+                    }
+                    name.removeFirst(lazyKey.count)
+                } else if name.starts(with: "_") {
                     // 处理 @propertyWrapper
                     name.removeFirst()
                     if names.contains(name) {

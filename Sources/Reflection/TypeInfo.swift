@@ -12,7 +12,7 @@ public struct TypeInfo {
     public let properties: [PropertyInfo]
 }
 
-func typeInfo(of type: Any.Type) -> TypeInfo {
+public func typeInfo(of type: Any.Type) -> TypeInfo {
     let count = _getRecursiveChildCount(type)
     let properties = (0..<count).compactMap({ index -> PropertyInfo? in
         var field = FieldReflectionMetadata()
