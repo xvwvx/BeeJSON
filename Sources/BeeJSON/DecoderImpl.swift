@@ -54,8 +54,8 @@ extension DecoderImpl {
     
     func unwrap<T>(_ type: T.Type, value: Any?) -> T? where T: Decodable {
         if let value = value,
-           let proto = type as? UnwrapProtocol.Type,
-           let value = proto.unwrap(value) as? T {
+           let proto = type as? _Transformable.Type,
+           let value = try? proto.transform(from: value) as? T {
             return value
         }
         return nil

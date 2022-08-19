@@ -9,12 +9,6 @@
 
 import Foundation
 
-
-public protocol BeeJSON {
-    init()
-    static func defaultValues() -> [String: Any]
-}
-
 public extension BeeJSON {
     
     static func defaultValues() -> [String: Any] {
@@ -54,9 +48,5 @@ extension NSObject {
     static func createInstance() -> NSObject {
         return self.init()
     }
-}
-
-public protocol BeeJSONUnwrap: UnwrapProtocol {
-    
 }
 

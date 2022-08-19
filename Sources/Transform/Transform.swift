@@ -7,11 +7,11 @@
 
 import Foundation
 
-public protocol Transformable: _CustomBasicType {}
+public protocol BeeJSONCustomTransformable: _CustomBasicType {}
 
-public protocol Transform: _CustomModelType {}
+public protocol BeeJSON: _CustomModelType {}
 
-public protocol TransformEnum: _RawEnumProtocol {}
+public protocol BeeJSONEnum: _RawEnumProtocol {}
 
 public struct Transformer {
     public init() {}
