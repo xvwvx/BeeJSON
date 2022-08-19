@@ -141,14 +141,8 @@ extension Optional: _BuiltInBasicType {
         return nil
     }
 
-    func _getWrappedValue() -> Any? {
-        return self.map( { (wrapped) -> Any in
-            return wrapped as Any
-        })
-    }
-
     func _plainValue() throws -> Any? {
-        if let value = _getWrappedValue() {
+        if case .some(let value) = self {
             if let transformable = value as? _Transformable {
                 return try transformable.plainValue()
             } else {
