@@ -11,7 +11,6 @@ struct PropertyItem {
     let name: String
     let value: Any
     let type: Any.Type
-    let isOptionalType: Bool
 }
 
 class Cache {
@@ -23,9 +22,9 @@ class Cache {
         assert(status == 0)
     }
     
-    private var cache: [String: [String: PropertyItem]] = [:]
+    private var cache: [String: [PropertyItem]] = [:]
     
-    func get(type: Any.Type) -> [String: PropertyItem]? {
+    func get(type: Any.Type) -> [PropertyItem]? {
         pthread_rwlock_rdlock(&rwlock)
         defer {
             pthread_rwlock_unlock(&rwlock)
@@ -34,7 +33,7 @@ class Cache {
         return cache[key]
     }
     
-    func set(type: Any.Type, value: [String: PropertyItem]) {
+    func set(type: Any.Type, value: [PropertyItem]) {
         pthread_rwlock_wrlock(&rwlock)
         defer {
             pthread_rwlock_unlock(&rwlock)

@@ -79,8 +79,7 @@ fileprivate func getPropertyItems<Key: CodingKey, Type: BeeJSON>(keyedBy _: Key.
                 let anyExtension = withAnyExtension(element.type)
                 let item = PropertyItem(name: name,
                                         value: anyExtension.read(pointer: pointer),
-                                        type: element.type,
-                                        isOptionalType: isOptionalType(element.type))
+                                        type: element.type)
                 result.append(item)
             }
         })
