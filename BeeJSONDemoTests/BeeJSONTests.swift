@@ -5,10 +5,14 @@
 //  Created  by 张绍平 on 2022/3/21
 //  
 //  
-	
+
 
 import XCTest
 import BeeJSON
+
+class BeeJSONEncoder: JSONEncoder {
+    
+}
 
 class BeeJSONTests: XCTestCase {
     
@@ -169,7 +173,7 @@ class BeeJSONTests: XCTestCase {
             var UInt32: Value<UInt32>
             var UInt64: Value<UInt64>
         }
-
+        
         let types: [Any.Type] = [
             String.self, Bool.self,
             Int8.self, Int16.self, Int32.self, Int64.self,
@@ -361,7 +365,7 @@ class BeeJSONTests: XCTestCase {
             var value2 = "test"
         }
         
-        struct Model: Codable {
+        struct Model: Codable, BeeJSON {
             @JSONText<Value?>(nil)
             var value
         }
@@ -446,9 +450,9 @@ class BeeJSONTests: XCTestCase {
             "dict": null
         }
         """
-        struct Model: Codable {
-            var array: [Int]
-            var dict: [String: String]
+        struct Model: Codable, BeeJSON {
+            var array: [Int] = []
+            var dict: [String: String] = [:]
         }
         let data = text.data(using: .utf8)!
         let model = try? BeeJSONDecoder().decode(Model.self, from: data)

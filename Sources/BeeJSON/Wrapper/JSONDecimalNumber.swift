@@ -19,12 +19,6 @@ public struct JSONDecimalNumber: Codable {
     }
     
     public init(from decoder: Decoder) throws {
-        let decoder: Decoder = {
-            if let decoder = decoder as? DecoderImpl {
-                return decoder.decoder
-            }
-            return decoder
-        }()
         guard let container = try? decoder.singleValueContainer() else {
             wrappedValue = .zero
             return

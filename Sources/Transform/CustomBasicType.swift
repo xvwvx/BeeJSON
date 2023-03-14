@@ -35,7 +35,7 @@ public extension _CustomBasicType where Self: Codable {
     }
     
     func _plainValue() throws -> Any? {
-        let data = try BeeJSONEncoder().encode(self)
+        let data = try JSONEncoder().encode(self)
         return try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
     }
     

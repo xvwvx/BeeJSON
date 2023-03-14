@@ -19,13 +19,7 @@ public struct JSONText<T>: Codable where T: Codable {
     }
     
     public func encode(to encoder: Encoder) throws {
-        let jsonEncoder: JSONEncoder = {
-            if let encoder = encoder as? EncoderImpl {
-                return encoder.jsonEncoder
-            }
-            return BeeJSONEncoder()
-        }()
-        let data = try jsonEncoder.encode(wrappedValue)
+        let data = try JSONEncoder().encode(wrappedValue)
         let str = String(data: data, encoding: .utf8)!
         var container = encoder.singleValueContainer()
         try container.encode(str)
@@ -42,13 +36,7 @@ public struct JSONText<T>: Codable where T: Codable {
         }()
         let data = str.data(using: .utf8)!
         
-        let jsonDecoder: JSONDecoder = {
-            if let decoder = decoder as? DecoderImpl {
-                return decoder.jsonDecoder
-            }
-            return BeeJSONDecoder()
-        }()
-        wrappedValue = try jsonDecoder.decode(T.self, from: data)
+        wrappedValue = try BeeJSONDecoder().decode(T.self, from: data)
     }
     
 }

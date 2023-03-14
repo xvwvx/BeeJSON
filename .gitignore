@@ -1,5 +1,9 @@
 # Xcode
 #
+Pods/
+Podfile.lock
+*.xcworkspace
+
 build/
 Build/
 *.pbxuser

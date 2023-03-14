@@ -19,12 +19,6 @@ public struct JSONAny<T>: Codable {
     }
     
     public func encode(to encoder: Encoder) throws {
-        let encoder: Encoder = {
-            if let encoder = encoder as? EncoderImpl {
-                return encoder.encoder
-            }
-            return encoder
-        }()
         if let encodable = wrappedValue as? Encodable {
             try encodable.encode(to: encoder)
         } else if let value = wrappedValue as? [String: Any] {
@@ -40,12 +34,6 @@ public struct JSONAny<T>: Codable {
     }
     
     public init(from decoder: Decoder) throws {
-        let decoder: Decoder = {
-            if let decoder = decoder as? DecoderImpl {
-                return decoder.decoder
-            }
-            return decoder
-        }()
         if let decodable = T.self as? Decodable.Type {
             if let value = try? decodable.init(from: decoder) as? T {
                 wrappedValue = value
