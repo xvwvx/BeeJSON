@@ -50,14 +50,24 @@ private var _iso8601Formatter: ISO8601DateFormatter = {
     return formatter
 }()
 
-fileprivate func getPropertyItems<Key: CodingKey, Type: BeeJSON>(keyedBy _: Key.Type, type: Type.Type) throws -> [PropertyItem] {
+fileprivate func getPropertyItems<Key: CodingKey, Type: BeeJSON>(keyedBy _: Key.Type, type _: Type.Type) throws -> [PropertyItem] {
     // class 不能做 cache
     //    if let result = Cache.shared.get(type: type) {
     //        return result
     //    }
     
-    var value = type.init()
-    let info = typeInfo(of: type)
+    func unwrap(_ value: Any) -> Any? {
+        if isOptionalType(type(of: value)) {
+            if case Optional<Any>.some(let value) = value {
+                return unwrap(value)
+            }
+            return nil
+        }
+        return value
+    }
+    
+    var value = Type.init()
+    let info = typeInfo(of: Type.self)
     let base = try withPointer(&value) { $0 }
     let result = info.properties
         .reduce(into: [PropertyItem](), { result, element in
@@ -77,9 +87,8 @@ fileprivate func getPropertyItems<Key: CodingKey, Type: BeeJSON>(keyedBy _: Key.
             if let name = name {
                 let pointer = base.advanced(by: element.offset)
                 let anyExtension = withAnyExtension(element.type)
-                let item = PropertyItem(name: name,
-                                        value: anyExtension.read(pointer: pointer),
-                                        type: element.type)
+                let value = anyExtension.read(pointer: pointer)
+                let item = PropertyItem(name: name, value: unwrap(value), type: element.type)
                 result.append(item)
             }
         })
@@ -102,11 +111,8 @@ extension JSONDecoderImpl: Decoder {
                             continue
                         }
                     }
-                    if case Optional<Any>.some(let value) = item.value {
-                        dictionary[item.name] = value
-                    } else {
-                        dictionary.removeValue(forKey: item.name)
-                    }
+                    
+                    dictionary[item.name] = item.value
                 }
             }
             

@@ -358,6 +358,34 @@ class BeeJSONTests: XCTestCase {
         XCTAssertEqual(model?.value.value3, origin.value.value3)
     }
     
+    func testOptionalNested() {
+        struct Model: Codable, BeeJSON {
+            // let 且有默认值无法decode
+            let int64: Int64????? = 6789
+            var int: Int?????? = 1111
+            var text: String????????
+            var text1: String????????
+        }
+        
+        do {
+            let data = """
+            {
+                "int64": 1234,
+                "int": 3456,
+                "text": 1111
+            }
+            """.data(using: .utf8)!
+            let model = try BeeJSONDecoder().decode(Model.self, from: data)
+            XCTAssertEqual(model.int64, 6789)
+            XCTAssertEqual(model.int, 3456)
+            XCTAssertEqual(model.text, "1111")
+            XCTAssertEqual(model.text1, nil)
+        } catch {
+            XCTAssertNotNil(error)
+        }
+        
+    }
+    
     func testOptionalTextWrapper() {
         struct Value: Codable, BeeJSON {
             var value0 = 0

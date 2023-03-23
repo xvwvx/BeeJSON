@@ -9,7 +9,7 @@ import Foundation
 
 struct PropertyItem {
     let name: String
-    let value: Any
+    let value: Any?
     let type: Any.Type
 }
 
