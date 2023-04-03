@@ -153,6 +153,46 @@ class BeeJSONTests: XCTestCase {
         XCTAssertEqual(model?.value4, 1645701161948111)
     }
     
+    
+    func testNested2() {
+        struct Message: Codable, BeeJSON {
+            var data = MessageData()
+        }
+
+        struct MessageData: Codable, BeeJSON {
+            // 文本消息
+            var textMessage: String? = ""
+            // 类型
+            var topic = ""
+            // 消息string
+            var message = ""
+        }
+        let topic = "live.online_user_count"
+        let message = "sssssssssssssssssss"
+        let textMessage = Int.max
+        let str = """
+        [
+            {
+                "data": {
+                    "topic": "\(topic)",
+                    "message": "\(message)",
+                    "textMessage": \(textMessage)
+                }
+            }
+        ]
+        """
+        do {
+            let data = str.data(using: .utf8)!
+            let array = try BeeJSONDecoder().decode([Message].self, from: data)
+            let messageData = array[0].data
+            XCTAssertEqual(messageData.topic, topic)
+            XCTAssertEqual(messageData.message, message)
+            XCTAssertEqual(messageData.textMessage, textMessage.description)
+        } catch {
+            XCTAssertNotNil(error)
+        }
+    }
+    
     func testWrongType() {
         struct Model: Codable {
             struct Value<T>: Codable where T: Codable {
@@ -365,6 +405,7 @@ class BeeJSONTests: XCTestCase {
             var int: Int?????? = 1111
             var text: String????????
             var text1: String????????
+            var array: [Int?] = []
         }
         
         do {
@@ -372,7 +413,13 @@ class BeeJSONTests: XCTestCase {
             {
                 "int64": 1234,
                 "int": 3456,
-                "text": 1111
+                "text": 1111,
+                "array": [
+                    1,
+                    3,
+                    4,
+                    "test"
+                ]
             }
             """.data(using: .utf8)!
             let model = try BeeJSONDecoder().decode(Model.self, from: data)

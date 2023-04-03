@@ -105,7 +105,11 @@ extension JSONDecoderImpl: Decoder {
                 for item in items {
                     if let value = dictionary[item.name],
                        let decodableType = item.type as? Decodable.Type {
-                        let decoder = JSONDecoderImpl(userInfo: self.userInfo, from: value, codingPath: [], options: self.options, type: type)
+                        let decoder = JSONDecoderImpl(userInfo: self.userInfo,
+                                                      from: value,
+                                                      codingPath: [],
+                                                      options: self.options,
+                                                      type: decodableType)
                         if let value = try? decoder.unwrapOptional(as: decodableType) {
                             dictionary[item.name] = value
                             continue
