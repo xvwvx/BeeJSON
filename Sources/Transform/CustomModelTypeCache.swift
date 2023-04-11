@@ -9,6 +9,8 @@
 import UIKit
 #endif
 
+import Runtime
+
 class CustomModelTypeCache {
     
     struct Item {
@@ -62,7 +64,7 @@ class CustomModelTypeCache {
         var mapper = CustomModelMapper()
         value.mapping(mapper: &mapper)
         
-        let info = typeInfo(of: T.self)
+        let info = try Runtime.typeInfo(of: T.self)
         let baseKey = Int(bitPattern: base)
         let names = info.properties.map({ $0.name })
         let items: [Item] = info.properties.compactMap { property in

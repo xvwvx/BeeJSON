@@ -305,6 +305,48 @@ class BeeJSONTests: XCTestCase {
         XCTAssertEqual(origin.value2, model?.value2)
     }
     
+    func testBeeJSONType() {
+        struct Model: Decodable, BeeJSON {
+            var value = 1234
+        }
+        let data = "".data(using: .utf8)!
+        do {
+            let model = try? BeeJSONDecoder().decode(Model.self, from: data)
+            XCTAssertNotNil(model)
+        }
+        
+        do {
+            let model = try? BeeJSONDecoder().decode(Model?.self, from: data)
+            XCTAssertNil(model)
+        }
+    }
+    
+    func testArray() {
+        let data = "".data(using: .utf8)!
+        do {
+            let array = try? BeeJSONDecoder().decode([Int].self, from: data)
+            XCTAssertNotNil(array)
+        }
+        
+        do {
+            let array = try? BeeJSONDecoder().decode([Int]?.self, from: data)
+            XCTAssertNil(array)
+        }
+    }
+    
+    func testDict() {
+        let data = "".data(using: .utf8)!
+        do {
+            let dict = try? BeeJSONDecoder().decode([String: String].self, from: data)
+            XCTAssertNotNil(dict)
+        }
+        
+        do {
+            let dict = try? BeeJSONDecoder().decode([String: String]?.self, from: data)
+            XCTAssertNil(dict)
+        }
+    }
+    
     func testAnyStruct() {
         struct Model: Codable {
             @JSONAny<[Any]>([]) var array
@@ -435,7 +477,7 @@ class BeeJSONTests: XCTestCase {
     
     func testOptionalTextWrapper() {
         struct Value: Codable, BeeJSON {
-            var value0 = 0
+            var value0 = 12345
             var value1 = true
             var value2 = "test"
         }
@@ -464,6 +506,11 @@ class BeeJSONTests: XCTestCase {
             let data = str.data(using: .utf8)!
             let model = try? BeeJSONDecoder().decode(Model.self, from: data)
             XCTAssertNotNil(model)
+            
+            let value = Value()
+            XCTAssertEqual(model?.value?.value0, value.value0)
+            XCTAssertEqual(model?.value?.value1, value.value1)
+            XCTAssertEqual(model?.value?.value2, value.value2)
         }
         
         do {

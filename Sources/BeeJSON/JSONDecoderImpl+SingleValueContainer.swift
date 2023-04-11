@@ -84,7 +84,14 @@ extension JSONDecoderImpl {
         }
         
         func decode<T>(_ type: T.Type) throws -> T where T : Decodable {
-            try decodeAsType(type)
+            let newDecoder = JSONDecoderImpl(
+                userInfo: self.impl.userInfo,
+                from: self.any,
+                codingPath: codingPath,
+                options: self.impl.options,
+                type: type
+            )
+            return try newDecoder.unwrap(as: type)
         }
         
     }

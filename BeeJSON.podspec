@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = 'BeeJSON'
-    s.version          = '1.0.0'
+    s.version          = '2.0.2'
     s.summary          = 'Swift JSON encoder & decoder for Codable.'
     s.homepage         = 'https://github.com/xvwvx/BeeJSON'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
@@ -13,4 +13,5 @@ Pod::Spec.new do |s|
     s.tvos.deployment_target = '11.0'
     s.watchos.deployment_target = '2.0'
     s.swift_versions = ['5.2']
+    s.dependency 'Runtime', '~> 2.2.2'
   end

@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+open class BeeJSONEncoder: JSONEncoder {
+    
+}

@@ -50,73 +50,45 @@ private var _iso8601Formatter: ISO8601DateFormatter = {
     return formatter
 }()
 
-fileprivate func getPropertyItems<Key: CodingKey, Type: BeeJSON>(keyedBy _: Key.Type, type _: Type.Type) throws -> [PropertyItem] {
-    // class 不能做 cache
-    //    if let result = Cache.shared.get(type: type) {
-    //        return result
-    //    }
-    
-    func unwrap(_ value: Any) -> Any? {
-        if isOptionalType(type(of: value)) {
-            if case Optional<Any>.some(let value) = value {
-                return unwrap(value)
-            }
-            return nil
-        }
-        return value
-    }
-    
-    var value = Type.init()
-    let info = typeInfo(of: Type.self)
-    let base = try withPointer(&value) { $0 }
-    let result = info.properties
-        .reduce(into: [PropertyItem](), { result, element in
-            let name: String? = {
-                var name = element.name
-                if Key(stringValue: name) != nil {
-                    return name
-                }
-                if name.starts(with: "_") {
-                    name.removeFirst()
-                    if Key(stringValue: name) != nil {
-                        return name
-                    }
-                }
-                return nil
-            }()
-            if let name = name {
-                let pointer = base.advanced(by: element.offset)
-                let anyExtension = withAnyExtension(element.type)
-                let value = anyExtension.read(pointer: pointer)
-                let item = PropertyItem(name: name, value: unwrap(value), type: element.type)
-                result.append(item)
-            }
-        })
-    //    Cache.shared.set(type: type, value: result)
-    return result
-}
+import Runtime
 
 extension JSONDecoderImpl: Decoder {
     
     func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> where Key : CodingKey {
         if var dictionary = self.any as? [String: Any] {
             if let beeJSONType = self.type as? BeeJSON.Type {
-                let items = try getPropertyItems(keyedBy: type, type: beeJSONType)
-                for item in items {
-                    if let value = dictionary[item.name],
-                       let decodableType = item.type as? Decodable.Type {
-                        let decoder = JSONDecoderImpl(userInfo: self.userInfo,
-                                                      from: value,
-                                                      codingPath: [],
-                                                      options: self.options,
-                                                      type: decodableType)
-                        if let value = try? decoder.unwrapOptional(as: decodableType) {
-                            dictionary[item.name] = value
-                            continue
+                if let info = try? Runtime.typeInfo(of: beeJSONType) {
+                    var value = beeJSONType.init()
+                    for propertyInfo in info.properties {
+                        let name: String? = {
+                            var name = propertyInfo.name
+                            if Key(stringValue: name) != nil {
+                                return name
+                            }
+                            if name.starts(with: "_") {
+                                name.removeFirst()
+                                if Key(stringValue: name) != nil {
+                                    return name
+                                }
+                            }
+                            return nil
+                        }()
+                        if let name = name {
+                            if let value = dictionary[name],
+                               let decodableType = propertyInfo.type as? Decodable.Type {
+                                let decoder = JSONDecoderImpl(userInfo: self.userInfo,
+                                                              from: value,
+                                                              codingPath: [],
+                                                              options: self.options,
+                                                              type: decodableType)
+                                if let value = try? decoder.unwrapOptional(as: decodableType) {
+                                    dictionary[name] = value
+                                    continue
+                                }
+                            }
+                            dictionary[name] = try? propertyInfo.get(from: value)
                         }
                     }
-                    
-                    dictionary[item.name] = item.value
                 }
             }
             
